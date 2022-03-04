@@ -1,0 +1,4 @@
+# 忽略 file/ 下的文件
+file/
+# 忽略 __pycache__ 文件夹
+/__pycache__
