@@ -74,6 +74,10 @@ class TimeTable:
         r = requests.post(self.url, data=post_data, cookies=cookies)
         r.encoding = r.apparent_encoding
         self.timetable_json = json.loads(r.text)
+        if self.timetable_json['kbList'] == []:
+            print()
+            print("该学年学期的课表尚未开放！")
+            sys.exit(0)
         return self.timetable_json
 
     def downfile_timetable(self, filename='timetable.json', path=sys.path[0]+'/file/'):
