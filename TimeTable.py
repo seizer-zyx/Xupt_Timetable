@@ -56,10 +56,12 @@ class TimeTable:
             time.sleep(0.01)
         time.sleep(1)
         # 获取登录凭证
-        jsessionid = driver.get_cookies()[0]['value']
+        cookies = driver.get_cookies()
+        name = cookies[0]['name']
+        value = cookies[0]['value']
         driver.quit()
         cookies = {
-            "JSESSIONID": jsessionid
+            name: value
         }
         return cookies
 
@@ -73,7 +75,12 @@ class TimeTable:
         cookies = self.__get_Identity()
         r = requests.post(self.url, data=post_data, cookies=cookies)
         r.encoding = r.apparent_encoding
-        self.timetable_json = json.loads(r.text)
+        try:
+            self.timetable_json = json.loads(r.text)
+        except json.decoder.JSONDecodeError:
+            print()
+            print("Please check your user and password !")
+            sys.exit(0)
         if self.timetable_json['kbList'] == []:
             print()
             print("该学年学期的课表尚未开放！")
